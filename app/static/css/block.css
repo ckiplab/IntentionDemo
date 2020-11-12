@@ -1,0 +1,53 @@
+/* projects */
+.intentions { margin: 0px 0px 60px; }
+/*.intention_row::after {
+    content: "";
+    clear: both;
+    display: table;
+}*/
+
+.intention_block {
+  float: left;
+  width: 250px;
+  height: 100px;
+  padding: 5px;
+  margin: 10px;
+  border: 1px solid gray;
+  display: flex;
+  background-color: #b0d8eb;
+}
+.intention_block h4{
+  margin: auto;
+  font-family: 'Cambria', 'Verdana', 'Calibri';
+  /*color: white;*/
+}
+
+.intention_block_red {
+  float: left;
+  width: 150px;
+  height: 100px;
+  padding: 5px;
+  margin: 10px;
+  border: 1px solid gray;
+  display: flex;
+  background-color: #ebb0bd;
+}
+.intention_block_red h4{
+  margin: auto;
+  font-family: 'Cambria', 'Verdana', 'Calibri';
+  /*color: white;*/
+}
+
+.clearfix:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.pattern {
+  /*float: left;*/
+  margin: 20px 0 0 0;
+  height: 50px;
+  padding: 30px;
+  /*width: 100%;*/
+  border: 1px solid gray;
+}
