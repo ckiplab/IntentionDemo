@@ -5,8 +5,9 @@
         "你今天過得好嗎",
         "給個聯絡方式吧",
         "你長得怎麼樣",
-        "(listener_聽者)?(aboutYou)(是)?(OtherWord_Ques_疑問)",
-        "(OtherWord_Ques_疑問_1)?(給)(speaker_說話者)?(aboutYou)(OtherWord_Ques_疑問_2)?"
+        "你(有沒有)男友(嗎)?",
+        "(listener_聽者)?(aboutYou)(是)?(OtherWord_Ques_疑問)?",
+        "(OtherWord_Ques_疑問_1)?(給|讓)(speaker_說話者)?(aboutYou)(OtherWord_Ques_疑問_2)?"
     ],
     "request": [
         "她有別的顏色嗎",
@@ -61,7 +62,7 @@
         "(speaker_說話者)?(expect_期望)(where)"
     ],
     "else_recommend": [
-        "(有沒有)?(other_另)(的)?((item)|(brand)|推薦|(商品_commodity))(的)?",
+        "(有沒有)?(other_另)(的)?((item)|(brand)|(推薦)|(商品_commodity))(的)?",
         "換一個",
         "還有嗎",
         "其他推薦呢",
@@ -103,20 +104,6 @@
         "你覺得哪個(item)比較好",
         "幫我決定一下要選哪個"
     ],
-    "inform": [
-        "我想要(brand)的",
-        "希望能找到可以(effect)的",
-        "我要有(effect)的",
-        "(有)?(brand|color|effect)(的話)?會比較好",
-        "我要(brand|color|effect|path)的",
-        "(brand|color|effect)的",
-        "(speaker_說話者)?(not)?((expect_期望)|(FondOf_喜歡))?((brand)|(color)|(effect)|(occasion))",
-        "(speaker_說話者)?((expect_期望)|(FondOf_喜歡))(找)((brand)|(color)|(effect)|(occasion))",
-        "((brand)|(color)|(effect))(還)?(item)((nice_良好)|(bad_壞))",
-        "(price_tooHigh|price_tooLow|informBad)",
-        "(以上|以下)",
-        "(price)"
-    ],
     "noidea": [
         "沒想法",
         "都可以",
@@ -138,10 +125,13 @@
         "清除紀錄",
         "前面說過的都不算",
         "reset",
-        "(前一個)全都(討厭)了"
+        "(前一個)全都(討厭)了",
+        "重頭來",
+        "重新開始"
     ],
     "search_item": [
         "求問(item)",
+        "我(想(要)?|(要))(買|選)?([一二三四五六七八].)?(item)",
         "尋找香味很濃厚的(item)",
         "來個(item)吧",
         "你們家的(item)有推薦的嗎",
@@ -200,6 +190,20 @@
         "怎麼辦我的皮膚(抱怨)掉了",
         "(skin)今天(抱怨)掉了"
     ],
+    "inform": [
+        "我想要(brand)的",
+        "希望能找到可以(effect)的",
+        "我要有(effect)的",
+        "(有)?(brand|color|effect)(的話)?會比較好",
+        "我要(brand|color|effect|path)的",
+        "(brand|color|effect)的",
+        "(speaker_說話者)?(not)?((expect_期望)|(FondOf_喜歡))?((brand)|(color)|(effect)|(occasion))",
+        "(speaker_說話者)?((expect_期望)|(FondOf_喜歡))(找)((brand)|(color)|(effect)|(occasion))",
+        "((brand)|(color)|(effect))(還)?(item)((nice_良好)|(bad_壞))",
+        "(price_tooHigh|price_tooLow|informBad)",
+        "(以上|以下)",
+        "(price)"
+    ],
     "thanks": [
         "哈哈哈好棒",
         "thx",
@@ -215,6 +219,7 @@
         "大感謝",
         "3Q",
         "多謝",
-        "謝謝"
+        "謝謝",
+        "感謝"
     ]
 }

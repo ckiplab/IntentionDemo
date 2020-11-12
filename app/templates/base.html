@@ -33,7 +33,9 @@
         {% if messages %}
         <p>
             {% for message in messages %}
-            <h4>{{ message }}</h4>
+              {% if message[:7] != 'Pattern' %}
+              <h4>{{ message }}</h4>
+              {% endif %}
             {% endfor %}
         </p>
         {% endif %}
@@ -42,7 +44,15 @@
         {% block content %}{% endblock %}
         <!-- <div class="clearfix"> -->
           <div class="pattern"> 
-            <h3> {{ pattern }} </h3>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              {% for message in messages %}
+                {% if message[:7] == 'Pattern' %}
+                <h3>{{ message }}</h3>
+                {% endif %}              
+              {% endfor %}
+            {% endif %}
+            {% endwith %}
           </div>
     </section>
     </body>
