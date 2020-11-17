@@ -5,7 +5,9 @@
     clear: both;
     display: table;
 }*/
-
+input {
+  font-size: 12px;
+}
 .intention_block {
   float: left;
   width: 250px;
@@ -22,19 +24,11 @@
   /*color: white;*/
 }
 
-.intention_block_red {
-  float: left;
-  width: 250px;
-  height: 100px;
-  padding: 5px;
-  margin: 10px;
-  border: 1px solid gray;
-  display: flex;
+.intention_block.red {
   background-color: #ebb0bd;
+
 }
-.intention_block_red h4{
-  margin: auto;
-  font-family: 'Cambria', 'Verdana', 'Calibri';
+.intention_block.red h4{
   /*color: white;*/
 }
 
@@ -45,8 +39,22 @@
 }
 .pattern {
   /*float: left;*/
-  margin: 20px 0 0 0;
+  margin: 20px 20px 0 0;
   height: 50px;
+  padding: 30px;
+  /*width: 100%;*/
+  border: 1px solid gray;
+}
+
+.button {
+  width: 100%;
+  height: 100%;
+}
+
+.suggestion {
+  /*float: left;*/
+  margin: 20px 20px 0 0;
+  height: auto;
   padding: 30px;
   /*width: 100%;*/
   border: 1px solid gray;

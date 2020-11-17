@@ -1,0 +1,20 @@
+examples
+
+1 你叫什麼名字                  (listener_聽者)?(aboutYou)(是)?(OtherWord_Ques_疑問)?
+2 康是美買得到嗎                (path)買得到嗎
+3 臉部怎麼保養                 (body)(要)?怎麼(maintain_保養)
+4 我選第一個                   (speaker_說話者)?((decide_決定_1)|(要_1)|((decide_決定_2))(要_2))(where|brand|color)(的)?
+5 有沒有其他建議的              (有沒有)?(other_另)(的)?((item)|(brand)|(推薦)|(商品_commodity))(的)?
+6 後會有期                     (farewell_離別)
+7 早安啊                      (SayHello_問候)
+8 幫我選一個唇釉                幫我選一個(item)   
+  我應該買桃紅色還是粉紅色的唇釉   我應該買(color_1)還是(color_2)的(item)
+9 我喜歡好上色的眉筆             (speaker_說話者)?(not)?((expect_期望)|(FondOf_喜歡))?((brand)|(color)|(effect)|(occasion))
+10 我不知道                    (speaker_說話者)?(not)(know_知道)
+11 我不太能接受這樣的產品         (sentiment)
+12 重新開始                     重新開始
+13 有建議的抗氧化產品嗎           (有沒有)(推薦)(的)?(brand|color|effect)?(的)?(item|商品_commodity)
+   可以推薦一個保濕的產品給我嗎     可以(推薦)(一個)?(brand|color|effect)?(的)?(item)(給我)?嗎
+14 是否有推薦的淡妝              (有沒有)?(推薦)(的)?(style)
+15 我狂冒痘痘怎麼辦              狂冒(acne)怎麼辦
+16 非常感謝！                   感謝

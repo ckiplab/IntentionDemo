@@ -1,6 +1,7 @@
 import re
 import json
 
+
 def read_json(filename):
     '''Read in a json file.'''
     with open(filename, 'r') as json_file:
@@ -37,15 +38,15 @@ class Controller(object):
                         subreg_expand = subreg
                         if subreg_expand[-2:] == '_1' or subreg_expand[-2:] == '_2':
                             subreg_expand = subreg_expand[:-2]
-                        # print('subreg', subreg_expand)
-                        # if k == 'search_item' and p == "(有沒有)(推薦)(的)?(brand|color|effect)?(的)?(item|商品_commodity)":
-                        #     print('subreggggg', subreg_expand)
+                        
                         ent_list = subreg_expand.split('|')
                         for ent in ent_list:
-                            if ent[:4] == 'name' or ent[:5] == 'brand':
+                            if ent[:4] == 'name':
                                 continue
-
-                            a = self.check_item(ent)
+                            elif ent[:5] == 'brand':
+                                a = self.check_item_brand(ent)
+                            else:
+                                a = self.check_item(ent)
                             subreg_expand = subreg_expand.replace(ent, a)
                             # if ent == 'effect':
                             #     print('effect')
@@ -56,7 +57,11 @@ class Controller(object):
 
                 # print('*'*50)
                 # print(pattern)
-                compiled = re.compile(pattern)
+                try:
+                    compiled = re.compile(pattern)
+                except:
+                    print(pattern)
+                    exit(0)
                 self.regex[k].append(compiled)
 
     def check_item(self, item):
@@ -73,6 +78,27 @@ class Controller(object):
         if senses:
             for s in senses:
                 sense_str = self.check_item(s)
+                sense_str_list.append(sense_str)
+            if terms:
+                sense_str_list.append(term_str)
+            return '|'.join(sense_str_list)
+        else:
+            return term_str
+
+    def check_item_brand(self, item):
+        try:
+            senses, terms = self.entity_info[item]
+            # print('senses', senses)
+            # print('terms', terms)
+        except:
+            return item
+        sense_str_list = []
+        
+        terms = ['('+l.replace('+', '\+').replace('.', '\.').replace('*', '\*').replace('(', '\(').replace(')', '\)').replace('=', '\=')+')' for l in terms]
+        term_str = '|'.join(terms)
+        if senses:
+            for s in senses:
+                sense_str = self.check_item_brand(s)
                 sense_str_list.append(sense_str)
             if terms:
                 sense_str_list.append(term_str)
@@ -98,21 +124,18 @@ class Controller(object):
             print('match_str', match_str)
             return match_intent, self.intent_pattern[match_intent][match_idx]
 
-def control(cmd):
-    ctrl = Controller('app/pattern/intent_pattern.json', 'app/pattern/entity_info.json')
-    
-    # if cmd == 'ddd':
-    #     cmd_string = 'lll'
-    # else:
-    #     cmd_string = 'index'
-    cmd_string, pattern_string = ctrl.check_intent(cmd)
-    # print('cmd_string', cmd_string)
-    # print('pattern', pattern_string)
-    return cmd_string, pattern_string
+    def control(self, cmd):
+        cmd_string, pattern_string = self.check_intent(cmd)
+        return cmd_string, pattern_string
+
+ctrl = Controller('app/pattern/intent_pattern.json', 'app/pattern/entity_info.json')
+
+
 
 
 if __name__ == '__main__':
     ctrl = Controller('app/pattern/intent_pattern.json', 'app/pattern/entity_info.json')
+    # ctrl = Controller('app/pattern/intent_pattern.json', 'ent.json')
     for k, v in ctrl.intent_pattern.items():
         print(k)
     # find_paren_exp = r'\(([\w\|]*)\)'
