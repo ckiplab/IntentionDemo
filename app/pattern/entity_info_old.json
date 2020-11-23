@@ -2122,10 +2122,7 @@
             "NEO-TEC_妮傲絲翠",
             "MissHana_花娜小姐",
             "THESAEM",
-            "LB",
-            "PUREBEAUTY",
-            "Babaria_西班牙",
-            "noreva_法國歐德瑪"
+            "LB"
         ],
         [
             "brand",
@@ -2133,29 +2130,6 @@
             "牌子",
             "哪家",
             "誰出的"
-        ]
-    ],
-    "noreva_法國歐德瑪": [
-        [],
-        [
-            "noreva 法國歐德瑪",
-            "noreva_法國歐德瑪"
-        ]
-    ],
-    "Babaria_西班牙": [
-        [],
-        [
-            "西班牙Babaria",
-            "babaria 西班牙babaria",
-            "Babaria_西班牙"
-        ]
-    ],
-    "PUREBEAUTY": [
-        [],
-        [
-            "PUREBEAUTY",
-            "purebeauty",
-            "Pure_Beauty"
         ]
     ],
     "MISSHA": [
@@ -3796,8 +3770,7 @@
         [
             "DR.BRONNER’S 布朗博士",
             "布朗博士",
-            "Dr.Bronner's",
-            "DR.BRONNER'S"
+            "Dr.Bronner's"
         ]
     ],
     "Goat": [
@@ -4800,7 +4773,6 @@
         [
             "Neal’s Yard Remedies 尼爾氏香芬庭園",
             "Neal’s Yard Remedies",
-            "Neal's Yard Remedies",
             "尼爾氏香芬庭園"
         ]
     ],
