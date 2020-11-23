@@ -34,6 +34,8 @@ def index():
         for s in sug:
             if s.find('name') == -1:
                 suggestions.append(s)
+        # return render_template('index.html', title='Intention Demo', form=form, cmd="", cmd_list=CMD_LIST, suggestions=suggestions)
+
 
     if form.validate_on_submit():
         print('fff')
