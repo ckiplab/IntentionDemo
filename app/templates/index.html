@@ -11,14 +11,12 @@
             {% for cmd_en, cmd_zh in cmd_list %}
                 <!-- <div class="intention_block {% if cmd == cmd_en %}red{% endif %}"> -->
                 <!-- <form action="/?pattern={{ cmd_en }}" method="post"> -->
-                    <button type="button" class="btn {% if cmd == cmd_en %} btn-success {% else %} btn-info {% endif %} my-3 mx-3">
-                        <!-- <p class="my-5"> -->
-                        <a href="./?pattern={{ cmd_en }}" class="text-white">
-                            {{ cmd_en }} {{ cmd_zh }}
+                    <!-- <button type="button" class="btn {% if cmd == cmd_en %} btn-success {% else %} btn-info {% endif %} my-3 mx-3"> -->
+                        <a href="./?pattern={{ cmd_en }}" class="btn {% if cmd == cmd_en %} btn-success {% else %} btn-info {% endif %} my-3 mx-3 text-white">
+                            <p class="my-3"> {{ cmd_en }} {{ cmd_zh }} </p> 
                         </a>
-                        <!-- </p> -->
                         <!-- {{ cmd_en }} {{ cmd_zh }} -->
-                    </button>
+                    <!-- </button> -->
                 <!-- </form> -->
                     
             {% endfor %}
