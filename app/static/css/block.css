@@ -10,16 +10,16 @@ input {
 }
 .btn-info {
   float: left;
-  width: 250px;
-  height: 100px;
+  width: 200px;
+  height: 70px;
   padding: 0;
   display: flex;
 }
 
 .btn-success {
   float: left;
-  width: 250px;
-  height: 100px;
+  width: 200px;
+  height: 70px;
   padding: 0;
   display: flex;
 }
