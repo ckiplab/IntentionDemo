@@ -10,10 +10,11 @@ def read_json(filename):
 
 class Controller(object):
     """docstring for Controller"""
-    def __init__(self, intent_pattern, entity_info):
+    def __init__(self, intent_pattern, entity_info, resp_info):
         super(Controller, self).__init__()
         self.intent_pattern = read_json(intent_pattern)
         self.entity_info = read_json(entity_info)
+        self.resp_info = read_json(resp_info)
         self.regex = {}
         self.prepare_regex()
         # print(self.regex['search_item'][16])
@@ -119,16 +120,16 @@ class Controller(object):
                         match_intent = intent
                         match_idx = i
         if match_str == "":
-            return "nomatch", "NO PATTERNS FOUND..."
+            return "nomatch", "NO PATTERNS FOUND...", ""
         else:
             print('match_str', match_str)
-            return match_intent, self.intent_pattern[match_intent][match_idx]
+            return match_intent, self.intent_pattern[match_intent][match_idx], self.resp_info[match_intent][match_idx][0]
 
     def control(self, cmd):
-        cmd_string, pattern_string = self.check_intent(cmd)
-        return cmd_string, pattern_string
+        cmd_string, pattern_string, resp_string = self.check_intent(cmd)
+        return cmd_string, pattern_string, resp_string
 
-ctrl = Controller('app/pattern/intent_pattern.json', 'app/pattern/entity_info.json')
+ctrl = Controller('app/pattern/intent_pattern.json', 'app/pattern/entity_info.json', 'app/pattern/response.json')
 
 
 
