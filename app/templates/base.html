@@ -47,7 +47,7 @@
         <!-- <div class="row mx-3"> -->
           
               {% for message in messages %}
-                {% if message[:7] != 'Pattern' %}
+                {% if message[:7] not in ['Pattern', 'Intenti']%}
                 <div class="alert alert-primary mx-md-5 mx-sm-3" role="alert"><h5 class="my-auto"> {{ message }} </h5> </div>
                 {% endif %}
               {% endfor %}
@@ -64,12 +64,13 @@
               {% with messages = get_flashed_messages() %}
               {% if messages %}
                 {% for message in messages %}
-                  {% if message[:7] == 'Pattern' %}
-                  <h3>{{ message }}</h3>
+                  {% if message[:7] in ['Pattern', 'Intenti']%}
+                  <h4>{{ message }}</h4>
                   {% endif %}              
                 {% endfor %}
               {% endif %}
               {% endwith %}
+              
             </div>
               
           </div>
@@ -77,7 +78,25 @@
           <div class="container-fluid my-4"> 
             <div class="bd-callout bd-callout-warning mx-md-5 mx-sm-3 my-2">
                 {% if resp_string %}
-                  <h3> Response: {{ resp_string }}</h3>
+                  {% if cmd == 'search_item' %}
+                    <span class="h4 align-middle">Response: </span>
+                    {% if get_item %}
+                      <form action=".{{ url_for('items') }}" target="_blank" method="post" class="mb-0 d-inline">
+                        <!-- <a onclick="window.open('.{{ item_url }}', 'newwindow', 'width=700, height=600')" class="btn btn-link"> display recommended items </a> -->
+                        {% for item in item_list %}
+                          <input name="brand-{{loop.index0}}" value="{{item[0]}}" class="d-none">
+                          <input name="name-{{loop.index0}}" value="{{item[1]}}" class="d-none">
+                          <input name="image-{{loop.index0}}" value="{{item[2]}}" class="d-none">
+                        {% endfor %}
+                        <input type="submit" value="display recommended items" class="btn btn-link px-0" style="font-size: 15pt">
+                        <!-- <button type="submit" class="btn btn-link">
+                          display recommended items
+                        </button> -->
+                      </form>
+                    {% endif %}
+                  {% else %}
+                    <h4> Response: {{ resp_string }}</h4>
+                  {% endif %}
                 {% endif %}
             </div>
               

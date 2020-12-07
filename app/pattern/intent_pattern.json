@@ -147,7 +147,8 @@
         "(speaker_說話者)?(expect_期望)(找)?(brand|color)?(的)?(item)",
         "(有沒有)(brand|color|effect)?(的)?(item)",
         "有推薦的(item)嗎",
-        "(有沒有)(推薦)(的)?(brand|color|effect)?(的)?(item|商品_commodity)",
+        "(有沒有)(推薦)(的)?(brand|color|effect)?(的)?(商品_commodity)",
+        "(有沒有)(推薦)(的)?(brand|color|effect)?(的)?(item)",
         "(OtherWord_Ques_疑問)?(推薦)(speaker_說話者)?(brand|color|effect)?(的)?(item)"
     ],
     "search_makeup": [
