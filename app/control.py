@@ -53,64 +53,76 @@ class Controller(object):
         # loop thru every items
         find_paren_exp = r'\(([\w\|]*)\)'
 
-        for k, p_list in self.intent_pattern.items():
-            self.regex[k] = []
-            for p in p_list:
-                # if p != "((brand_1)的)?(name)的(price|feeling|color|smell|volume|CP|url|brand_2|pic|listed_time|comment|effect|info|tips|article|texture)(是什麼|如何)":
-                #     continue
+        for intent, p_list in self.intent_pattern.items():
+            self.regex[intent] = []
+            for p in p_list:  
+                # for every pattern in p_list, we replace the placeholders with real value
+                # and compile it into a compiled regex
                 pattern = p
-                m = re.findall(find_paren_exp, p)
+                m = re.findall(find_paren_exp, p)  # all (...|...|...) in the regex
                 if m:
-                    for subreg in m:
+                    for subreg in m:  # for every (...|...|...)
                         # if subreg[:5] == 'brand' or subreg[:4] == 'name':
                         #     continue
+
+                        # subereg_expand represents the new subreg after we replace the placeholders
                         subreg_expand = subreg
+                        # handle 2 same placeholder in one regex
                         if subreg_expand[-2:] == '_1' or subreg_expand[-2:] == '_2':
                             subreg_expand = subreg_expand[:-2]
                         
-                        ent_list = subreg_expand.split('|')
+                        # get all entity in subreg
+                        ent_list = subreg_expand.split('|') # every ... between | is an entity
                         for ent in ent_list:
-                            if ent[:4] == 'name':
+                            if ent[:4] == 'name':         # do not handle names (too many of them, time consuming)
                                 continue
-                            elif ent[:5] == 'brand':
-                                a = self.check_item_brand(ent)
+                            elif ent[:5] == 'brand':      # replace 'brand' with all possible brands
+                                replace_str = self.check_item_brand(ent)
                             else:
-                                a = self.check_item(ent)
-                            subreg_expand = subreg_expand.replace(ent, a)
-                            # if ent == 'effect':
-                            #     print('effect')
-                            #     print('subre', subreg_expand)
-                        pattern = pattern.replace(subreg, subreg_expand)
+                                replace_str = self.check_item(ent)  # replace 'item' with all possible item types
+                            subreg_expand = subreg_expand.replace(ent, replace_str)  # replace entities
+
+                        # replace every subreg with expanded subreg
+                        pattern = pattern.replace(subreg, subreg_expand)  
 
                 try:
                     compiled = re.compile(pattern)
-                except:
+                except:  # if sth goes wrong -> gg
                     print(pattern)
                     exit(0)
-                self.regex[k].append(compiled)
+
+                # append all regex into a list, later compare it to input command 1 by 1
+                self.regex[intent].append(compiled)
 
     def check_item(self, item):
-        try:
+        '''
+            反覆去check此sense是否有下位的sense(可以用更細的概念取代)
+            以及他是否有同義詞，把所有這些都拿進來變成一個regex
+            確保所有符合此概念的詞都可以被match
+        '''
+        try:     # the first list are possible senses, terms are similar meaning words
             senses, terms = self.entity_info[item]
-            # print('senses', senses)
-            # print('terms', terms)
-        except:
+        except:  # if not a key in entity_info -> means it is a item (reach the bottom)
             return item
         sense_str_list = []
         
         terms = ['('+l+')' for l in terms]
-        term_str = '|'.join(terms)
+        term_str = '|'.join(terms)  # combine all terms into a regex
         if senses:
-            for s in senses:
+            for s in senses:        # if the first list not empty -> need to check those senses
                 sense_str = self.check_item(s)
                 sense_str_list.append(sense_str)
             if terms:
                 sense_str_list.append(term_str)
-            return '|'.join(sense_str_list)
-        else:
+            return '|'.join(sense_str_list)  # return sense str and term str combined
+        else:                       # if first list empty -> only return term str 
             return term_str
 
     def check_item_brand(self, item):
+        '''
+            same as check item
+            but add escape char to all special chars
+        '''
         try:
             senses, terms = self.entity_info[item]
         except:
