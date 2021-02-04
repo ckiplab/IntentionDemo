@@ -1,8 +1,9 @@
 from app import app
 from flask import render_template, flash, request, redirect, url_for
-from app.forms import LoginForm
+from app.forms import Form
 from app.control import ctrl
 
+# all commands, english and chinese
 CMD_LIST = [
     ('aboutYou', '關於你',),
     ('request', '要求',),
@@ -24,273 +25,58 @@ CMD_LIST = [
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    form = LoginForm()
-    pattern_string = ""
-    resp_string = ""
+    form = Form()           # flask form
+    pattern_string = ""     # pattern string
+    resp_string = ""        # response string
 
-    get_item = False
+    get_item = False        # whether getting item info (bool)
     pattern = request.args.get('pattern')
-    suggestions = []
+    suggestions = []        # all the possible patterns(suggestion) corresponding to the intention 
+                            # user can refer to the suggestion to formulate their own responses
     item_list = []
-    if pattern:
+    if pattern: 
+        # if ?pattern=..., means user have clicked on a intention button
+        # -> display all possible patterns
         sug = ctrl.intent_pattern[pattern]
         for s in sug:
-            if s.find('name') == -1:
-                suggestions.append(s)
-        # return render_template('index.html', title='Intention Demo', form=form, cmd="", cmd_list=CMD_LIST, suggestions=suggestions)
+            if s.find('name') == -1:  # filter those pattern with 'name' in it, because it will greatly slow down the parsing process
+                suggestions.append(s) 
 
 
-    if form.validate_on_submit():
-        print('fff')
-        command = form.inputtext.data
-        flash('已輸入指令: {}'.format(command))
+    if form.validate_on_submit():               # if we have submit the form
+        command = form.inputtext.data           # the string user inputted
+        flash('已輸入指令: {}'.format(command))   # using flask flash() function, later render the message in html
 
-        cmd_string, pattern_string, get_item, item_list, resp_string = ctrl.control(command)
+        # controller get the command, and return the intent, the pattern, whether get item,
+        # the retrived item list and the response string
+        intent_string, pattern_string, get_item, item_list, resp_string = ctrl.control(command)
 
+        # get chinese intent string
         zh_string = ""
         for k in CMD_LIST:
-            if k[0] == cmd_string:
+            if k[0] == intent_string:
                 zh_string = k[1]
 
-        flash('Intention: {} {}'.format(cmd_string, zh_string))
+        # using flask flash() function, later render the message in html
+        # displaying both pattern and intention
+        flash('Intention: {} {}'.format(intent_string, zh_string))
         flash('Pattern:   {}'.format(pattern_string))
-        # flash('Pattern: [{} {}] {}'.format(cmd_string, zh_string, pattern_string))
-        # return redirect(url_for(cmd_string))
-        print(cmd_string)
-        return render_template('index.html', title='Intention Demo', form=form, cmd=cmd_string, cmd_list=CMD_LIST, suggestions=suggestions, get_item=get_item, item_list=item_list, resp_string=resp_string)
-    return render_template('index.html', title='Intention Demo', form=form, cmd="", cmd_list=CMD_LIST, suggestions=suggestions, get_item=get_item, item_list=item_list, resp_string=resp_string)
+
+        print(intent_string)
+        return render_template('index.html', title='Intention Demo', form=form, intent=intent_string, cmd_list=CMD_LIST, suggestions=suggestions, get_item=get_item, item_list=item_list, resp_string=resp_string)
+    return render_template('index.html', title='Intention Demo', form=form, intent="", cmd_list=CMD_LIST, suggestions=suggestions, get_item=get_item, item_list=item_list, resp_string=resp_string)
 
 @app.route('/items', methods=['GET', 'POST'])
 def items():
     num_form = (len(request.form))//3
     print(num_form)
     item_list = []
-    form_table = request.form.to_dict(flat=False)
+    form_table = request.form.to_dict(flat=False)  # form converted to type of [ython dictionary 
     print('table', form_table)
     for i in range(num_form):
-        # print(form_table['attr-%d'%i], form_table['value-%d'%i])
-        item_list.append((form_table['brand-%d'%i], form_table['name-%d'%i], form_table['image-%d'%i]))
+        item_list.append((form_table['brand-%d'%i], form_table['name-%d'%i], form_table['image-%d'%i])) 
+        # item_list is a list of products, each element contains its brand, name and image
 
     return render_template('items.html', item_list = item_list)
-
-
-# @app.route('/aboutYou', methods=['GET', 'POST'])
-# def aboutYou():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('aboutYou.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/request', methods=['GET', 'POST'])
-# def request():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('request.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/beauty_care', methods=['GET', 'POST'])
-# def beauty_care():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('beauty_care.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/choose', methods=['GET', 'POST'])
-# def choose():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('choose.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/else_recommend', methods=['GET', 'POST'])
-# def else_recommend():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('else_recommend.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/goodbye', methods=['GET', 'POST'])
-# def goodbye():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('goodbye.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/greeting', methods=['GET', 'POST'])
-# def greeting():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('greeting.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/help_decision', methods=['GET', 'POST'])
-# def help_decision():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('help_decision.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/inform', methods=['GET', 'POST'])
-# def inform():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('inform.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/noidea', methods=['GET', 'POST'])
-# def noidea():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('noidea.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/react', methods=['GET', 'POST'])
-# def react():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('react.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/reset', methods=['GET', 'POST'])
-# def reset():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('reset.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/search_item', methods=['GET', 'POST'])
-# def search_item():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('search_item.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/search_makeup', methods=['GET', 'POST'])
-# def search_makeup():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('search_makeup.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/skinBad', methods=['GET', 'POST'])
-# def skinBad():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('skinBad.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/thanks', methods=['GET', 'POST'])
-# def thanks():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('thanks.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-# @app.route('/nomatch', methods=['GET', 'POST'])
-# def nomatch():
-#     form = LoginForm()
-#     pattern_string = ""
-#     if form.validate_on_submit():
-#         print("nomatch")
-#         command = form.inputtext.data
-#         flash('已輸入指令: {}'.format(command))
-#         cmd_string, pattern_string = control(command)
-#         flash('Pattern: {}'.format(pattern_string))
-#         return redirect(url_for(cmd_string))
-#     return render_template('nomatch.html', title='Intention Demo', form=form, pattern=pattern_string)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
